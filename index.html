@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Kuromi & Our's Christmas Party</title>
+    <style>
+        /* Base Styles */
+        body {
+            background-color: #2b1b2c;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            touch-action: manipulation;
+        }
+
+        /* Container and Main Elements */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: rgba(43, 27, 44, 0.95);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(255, 105, 180, 0.3);
+            border: 2px solid #9b6b9e;
+            position: relative;
+            z-index: 1;
+        }
+
+        .characters-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px auto;
+        }
+
+        /* Character Styles */
+        .character {
+            width: 300px;
+            height: 300px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            cursor: pointer;
+            transition: transform 0.3s;
+            animation: bounce 2s infinite;
+        }
+
+        .kuromi {
+            background-image: url('https://i.pinimg.com/736x/e1/5f/f1/e15ff1a7e842f6e769e812cfa66c3674.jpg');
+        }
+
+        .melody {
+            background-image: url('https://i.pinimg.com/736x/a1/11/9b/a1119bef30691d14c8d2d04651a69c36.jpg');
+        }
+
+        .character:hover {
+            transform: scale(1.1);
+        }
+
+        .character.happy {
+            animation: happyDance 1s;
+        }
+
+        .character.super-happy {
+            animation: superHappyDance 1.5s;
+        }
+
+        /* Christmas Elements in Container */
+        .container-decorations {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 0;
+            font-size: 24px;
+        }
+
+        .container-decoration {
+            position: absolute;
+            font-size: 28px;
+            opacity: 0.7;
+            animation: float 3s infinite ease-in-out;
+        }
+
+        .festive-border {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border: 3px solid #ff69b4;
+            border-radius: 20px;
+            animation: borderTwinkle 2s infinite;
+            pointer-events: none;
+        }
+
+        /* Headers and Text */
+        h1 {
+            color: #ff69b4;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Button Styles */
+        .gift-button {
+            background-color: #9b6b9e;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 18px;
+            margin: 10px;
+            transition: transform 0.2s;
+            border: 2px solid #ff69b4;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 2;
+        }
+
+        .gift-button:hover {
+            transform: scale(1.05);
+            background-color: #ff69b4;
+        }
+
+        /* Counter Elements */
+        .combo-counter, .gift-counter {
+            position: fixed;
+            right: 20px;
+            background: rgba(255, 105, 180, 0.9);
+            padding: 10px 20px;
+            border-radius: 15px;
+            color: white;
+            z-index: 1000;
+            border: 2px solid #9b6b9e;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .combo-counter {
+            top: 20px;
+            font-size: 24px;
+        }
+
+        .gift-counter {
+            top: 80px;
+            font-size: 20px;
+            background: rgba(155, 107, 158, 0.9);
+        }
+
+        /* Christmas Elements */
+        .christmas-elements {
+            position: fixed;
+            font-size: 40px;
+            opacity: 0.4;
+            pointer-events: none;
+            z-index: -1;
+            animation: float 3s infinite ease-in-out;
+        }
+
+        .snow {
+            position: fixed;
+            top: -20px;
+            pointer-events: none;
+            z-index: 2;
+            animation: snowfall 4s linear;
+        }
+
+        /* Gift Animation */
+        .gift-emoji {
+            position: fixed;
+            top: -30px;
+            font-size: 24px;
+            pointer-events: none;
+            z-index: 1000;
+            animation: giftDrop 3s linear;
+            opacity: 1;
+        }
+
+        /* Combo Popup */
+        .combo-popup {
+            position: fixed;
+            font-size: 36px;
+            font-weight: bold;
+            color: #ff69b4;
+            pointer-events: none;
+            animation: popupFade 1s forwards;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .super-combo {
+            font-size: 48px;
+            color: gold;
+            text-shadow: 0 0 10px #ff69b4;
+        }
+
+        /* Animations */
+        @keyframes borderTwinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes snowfall {
+            from {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            to {
+                transform: translateY(105vh) rotate(360deg);
+                opacity: 0.7;
+            }
+        }
+
+        @keyframes giftDrop {
+            0% {
+                transform: translateY(0px) rotate(0deg);
+                opacity: 1;
+            }
+            80% { opacity: 1; }
+            100% {
+                transform: translateY(105vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        @keyframes happyDance {
+            0%, 100% { transform: translateY(0) scale(1); }
+            25% { transform: translateY(-20px) scale(1.1) rotate(10deg); }
+            50% { transform: translateY(0) scale(1.1) rotate(-10deg); }
+            75% { transform: translateY(-10px) scale(1.1) rotate(10deg); }
+        }
+
+        @keyframes superHappyDance {
+            0%, 100% { transform: translateY(0) scale(1); }
+            25% { transform: translateY(-30px) scale(1.2) rotate(20deg); }
+            50% { transform: translateY(0) scale(1.2) rotate(-20deg); }
+            75% { transform: translateY(-20px) scale(1.2) rotate(20deg); }
+        }
+
+        @keyframes popupFade {
+            0% { transform: scale(0.5); opacity: 0; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Main Container -->
+    <div class="container">
+        <div class="festive-border"></div>
+        <div class="container-decorations" id="containerDecorations"></div>
+        <h1>🎄 Kuromi & Our's Christmas Party 🎄</h1>
+        <div class="characters-container">
+            <div class="character kuromi" id="kuromi"></div>
+            <div class="character melody" id="melody"></div>
+        </div>
+        <button class="gift-button" onclick="makeItRain(event)">click to giving Gifts! 🎁</button>
+    </div>
+
+    <!-- Counters -->
+    <div class="combo-counter" id="comboCounter">Combo: 0</div>
+    <div class="gift-counter" id="giftCounter">Total Gifts: 0</div>
+
+    <!-- Audio Elements -->
+    <audio id="bgMusic" loop>
+        <source src="https://youtu.be/aAkMkVFwAoo?si=E0SlLfDnkujo0sgS" type="audio/mp3">
+    </audio>
+    <audio id="clickSound">
+        <source src="https://youtu.be/BCBk1Ry5uOk?si=LbWJokf9yvuxFNz8" type="audio/mp3">
+    </audio>
+    <audio id="comboSound">
+        <source src="https://youtu.be/yi2VKazDceU?si=1xztoChVrlvSs5RO" type="audio/mp3">
+    </audio>
+
+    <script>
+        // Global Variables
+        let comboCount = 0;
+        let totalGifts = 0;
+        let lastClickTime = 0;
+        const comboTimeout = 2000;
+
+        // Audio Elements
+        const bgMusic = document.getElementById('bgMusic');
+        const clickSound = document.getElementById('clickSound');
+        const comboSound = document.getElementById('comboSound');
+        bgMusic.volume = 0.3;
+        clickSound.volume = 0.5;
+        comboSound.volume = 0.7;
+
+        // Christmas Elements Array
+        const christmasEmojis = ['🎄', '⭐', '🎅', '🦌', '❄️', '🔔', '🎁', '🕯️'];
+        const giftEmojis = ['🎁', '🎀', '🪄', '💝', '🧸'];
+
+        // Initialize Background Music
+        document.addEventListener('click', function startMusic() {
+            bgMusic.play();
+            document.removeEventListener('click', startMusic);
+        }, { once: true });
+
+        // Add container decorations
+        function addContainerDecorations() {
+            const container = document.getElementById('containerDecorations');
+            const emojis = ['🎄', '⭐', '🎅', '🦌', '❄️', '🔔', '🎁', '🕯️'];
+            
+            for (let i = 0; i < 10; i++) {
+                const decoration = document.createElement('div');
+                decoration.className = 'container-decoration';
+                decoration.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                decoration.style.left = Math.random() * 100 + '%';
+                decoration.style.top = Math.random() * 100 + '%';
+                decoration.style.animationDelay = Math.random() * 2 + 's';
+                container.appendChild(decoration);
+            }
+        }
+
+        // Add Christmas Elements
+        function addChristmasElements() {
+            for (let i = 0; i < 15; i++) {
+                const element = document.createElement('div');
+                element.className = 'christmas-elements';
+                element.textContent = christmasEmojis[Math.floor(Math.random() * christmasEmojis.length)];
+                element.style.left = Math.random() * window.innerWidth + 'px';
+                element.style.top = Math.random() * window.innerHeight + 'px';
+                element.style.animationDelay = Math.random() * 2 + 's';
+                document.body.appendChild(element);
+            }
+        }
+
+        // Create Snow Effect
+        function createSnow() {
+            const snow = document.createElement('div');
+            snow.className = 'snow';
+            snow.innerHTML = '❄️';
+            snow.style.left = Math.random() * window.innerWidth + 'px';
+            snow.style.fontSize = Math.random() * 15 + 10 + 'px';
+            snow.style.opacity = Math.random() * 0.5 + 0.5;
+            document.body.appendChild(snow);
+
+            snow.addEventListener('animationend', () => snow.remove());
+        }
+
+        // Create Gift
+        function createGift(isBonus = false) {
+            const gift = document.createElement('div');
+            gift.className = 'gift-emoji';
+            gift.textContent = giftEmojis[Math.floor(Math.random() * giftEmojis.length)];
+            gift.style.left = Math.random() * window.innerWidth + 'px';
+            gift.style.fontSize = isBonus ? '32px' : '24px';
+            document.body.appendChild(gift);
+
+            gift.addEventListener('animationend', () => gift.remove());
+        }
+
+        // Show Combo Popup
+        function showComboPopup(text, x, y, isSuper = false) {
+            const popup = document.createElement('div');
+            popup.className = 'combo-popup' + (isSuper ? ' super-combo' : '');
+            popup.textContent = text;
+            popup.style.left = x + 'px';
+            popup.style.top = y + 'px';
+            document.body.appendChild(popup);
+            
+            popup.addEventListener('animationend', () => popup.remove());
+        }
+
+        // Update character moods
+        function updateCharacterMood(isSpecial) {
+            const characters = ['kuromi', 'melody'];
+            characters.forEach(char => {
+                const element = document.getElementById(char);
+                element.className = `character ${char} ` + (isSpecial ? 'super-happy' : 'happy');
+                setTimeout(() => element.className = `character ${char}`, isSpecial ? 1500 : 1000);
+            });
+        }
+
+        // Main Rain Function
+        function makeItRain(event) {
+            const now = Date.now();
+            if (now - lastClickTime < comboTimeout) {
+                comboCount++;
+                clickSound.currentTime = 0;
+                clickSound.play();
+            } else {
+                comboCount = 1
+            }
+
+            lastClickTime = now;
+            
+            totalGifts++;
+            document.getElementById('comboCounter').textContent = `Combo: ${comboCount}`;
+            document.getElementById('giftCounter').textContent = `Total Gifts: ${totalGifts}`;
+
+            showComboPopup(`${comboCount}x COMBO!`, event.clientX, event.clientY);
+            createGift();
+            updateCharacterMood(false);
+
+            if (comboCount % 10 === 0) {
+                updateCharacterMood(true);
+                comboSound.currentTime = 0;
+                comboSound.play();
+                
+                for (let i = 0; i < comboCount; i++) {
+                    setTimeout(() => createGift(true), i * 50);
+                }
+                
+                showComboPopup(`MEGA COMBO: ${comboCount}x!`, 
+                    window.innerWidth/2 - 100, 
+                    window.innerHeight/2 - 100, 
+                    true
+                );
+
+                for (let i = 0; i < 20; i++) {
+                    setTimeout(createSnow, i * 100);
+                }
+            }
+        }
+
+        // Reset combo after timeout
+        setInterval(() => {
+            if (Date.now() - lastClickTime >= comboTimeout && comboCount > 0) {
+                comboCount = 0;
+                document.getElementById('comboCounter').textContent = `Combo: ${comboCount}`;
+            }
+        }, 100);
+
+        // Create snow periodically
+        setInterval(createSnow, 1000);
+
+        // Prevent double-tap zoom on mobile
+        document.addEventListener('touchend', function(event) {
+            event.preventDefault();
+            event.target.click();
+        }, false);
+
+        // Initialize
+        addContainerDecorations();
+        addChristmasElements();
+    </script>
+</body>
+</html>
